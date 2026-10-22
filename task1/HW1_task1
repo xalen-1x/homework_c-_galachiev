@@ -1,0 +1,38 @@
+#include <iostream>
+
+double dot_product(double* a, double* b, int n) {
+    double res = 0;
+    for (int i = 0; i < n; i++) {
+        res += a[i]*b[i];
+    }
+    return res;
+}
+
+int main(int argc, char* argv[]) {
+
+    if (argc != 2) { return 1; }
+
+    int n = 0;
+    char* s = argv[1];
+    while (*s != '\0') {
+        n = n * 10 + (*s - '0');
+        s++;
+    }
+
+    double* a = new double[n];
+    double* b = new double[n];
+
+    for (int i = 0; i < n; i++) {
+        std::cin >> a[i];
+    }
+    for (int i = 0; i < n; i++) {
+        std::cin >> b[i];
+    }
+    
+    std::cout << dot_product(a,b,n) << std::endl;
+
+    delete[] a;
+    delete[] b;
+    
+    return 0;
+}
