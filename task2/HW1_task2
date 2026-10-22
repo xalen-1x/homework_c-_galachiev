@@ -1,0 +1,60 @@
+#include <iostream>
+#define ll long long
+
+void my_swap(int& a, int& b) {
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+
+void my_reverse(int* start, int* end) {
+    while(start < end) {
+        my_swap(*start, *end);
+        start++;
+        end--;
+    }
+}
+
+int main(int argc, char* argv[]) {
+    
+    if (argc != 2) { return 1; }
+
+    int n = 0;
+    char* s = argv[1];
+    while (*s != '\0') {
+        n = n * 10 + (*s - '0');
+        s++;
+    }
+
+    int* arr = new int[n];
+    for (int i = 0; i < n; i++) {
+        std::cin >> arr[i];
+    }
+    
+    ll k;
+    std::cin >> k;
+    if (k < 0) {
+        k = n - (-k % n);
+    } else {
+        k = k % n;
+    }
+
+    my_reverse(arr, arr+(n-k-1));
+    my_reverse(arr+(n-k),arr+(n-1));
+    my_reverse(arr, arr+(n-1));
+
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i] << std::endl;
+    }
+
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i];
+        if (i < n - 1) {
+            std::cout << " ";
+        }
+    }  
+    std::cout << std::endl;
+
+    delete[] arr;
+    return 0;
+}
