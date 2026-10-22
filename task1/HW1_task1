@@ -1,38 +1,73 @@
 #include <iostream>
 
-double dot_product(double* a, double* b, int n) {
-    double res = 0;
-    for (int i = 0; i < n; i++) {
-        res += a[i]*b[i];
+char* find_end_int(char* num) {
+    while(*num != '.' && *num != '\0') {
+        num++;
     }
-    return res;
+    return num;
+}
+
+void compare(char* num1, char* num2, bool is_neg) {
+    while (*num1 == *num2 && *num1 != '\0' && *num2 != '\0') {
+        num1++;
+        num2++;
+    }
+
+    if (*num1 == '.') num1++;
+    if (*num2 == '.') num2++;
+
+    while (*num1 == *num2 && *num1 != '\0' && *num2 != '\0') {
+        num1++;
+        num2++;
+    }
+
+    if (*num1 > *num2) {
+        std::cout << (is_neg ? "less" : "greater") << std::endl;
+    } else if (*num2 > *num1) {
+        std::cout << (is_neg ? "greater" : "less") << std::endl;
+    } else {
+        std::cout << "equal" << std::endl;
+    }
 }
 
 int main(int argc, char* argv[]) {
-
-    if (argc != 2) { return 1; }
-
-    int n = 0;
-    char* s = argv[1];
-    while (*s != '\0') {
-        n = n * 10 + (*s - '0');
-        s++;
-    }
-
-    double* a = new double[n];
-    double* b = new double[n];
-
-    for (int i = 0; i < n; i++) {
-        std::cin >> a[i];
-    }
-    for (int i = 0; i < n; i++) {
-        std::cin >> b[i];
-    }
     
-    std::cout << dot_product(a,b,n) << std::endl;
+    if (argc != 3) {
+        return 1;
+    }
 
-    delete[] a;
-    delete[] b;
-    
+    char* num1 = argv[1];
+    char* num2 = argv[2];
+
+    bool is_1neg = false, is_2neg = false;
+    if (num1[0] == '-') {
+        is_1neg = true;
+        num1++;
+    } else if (num1[0] == '+') num1++;
+    if (num2[0] == '-') {
+        is_2neg = true;
+        num2++;
+    } else if (num2[0] == '+') num2++;
+
+    if (is_1neg > is_2neg) { 
+        std::cout << "less" << std::endl;; 
+        return 0;
+    } else if (is_2neg > is_1neg) {
+        std::cout << "greater" << std::endl;
+        return 0;
+    } else {
+        char* end1 = find_end_int(num1);
+        char* end2 = find_end_int(num2);
+
+        if (end1-num1 > end2-num2) {
+            std::cout << (is_1neg ? "less" : "greater") << std::endl;
+            return 0;
+        } else if (end1-num1 < end2-num2) {
+            std::cout << (is_1neg ? "greater" : "less") << std::endl;
+            return 0;
+        } else {
+            compare(num1, num2, is_1neg);   
+        }
+    }
     return 0;
 }
